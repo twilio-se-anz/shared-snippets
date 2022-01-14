@@ -7,6 +7,7 @@ Top level folders should or organise in products. For example, flex plugin snipp
 
 Please comment in your snippet any product documentation which will help understand how it's used. Snippets are not intended to be a complete solution, it is just code example. However, please ensure it is working code.
 
+If the snippet is cross product (eg. studio / functions), add description and link in the [CATALOGUE](/CATALOGUE.md) file 
 ## Reporting Issues
 The issues list here is largely unmonitored. Please ask a Twilio Solution Engineer to help resolve any issues with the code snippet. We will remove the code if it no longer works. 
 
