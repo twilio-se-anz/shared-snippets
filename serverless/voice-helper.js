@@ -23,7 +23,8 @@ exports.handler = async function (context, event, callback) {
     try {
         await restClient.calls
             .create({
-                twiml: response,
+                // Note: The twiml needs to be a stringified version of the Twiml object
+                twiml: response.toString(),
                 to: toNumber,
                 from: fromNumber
             });
