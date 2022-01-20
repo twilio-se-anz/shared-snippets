@@ -18,7 +18,7 @@ init(flex, manager) {
         console.log(`no queue matched ${payload.queueSid}`);
     }
     console.log('New Payload', newPayload);
-    original(newPayload);
+    return original(newPayload);
   });
 
 }
