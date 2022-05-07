@@ -15,16 +15,27 @@
 const hubspot = require('@hubspot/api-client');
 const axios = require('axios')
 
+/**
+ * Add your own template and twilio number here.
+ */
+// Change this to suit your needs, you can pass a template for text body. 
+const twilioPhoneNumber = '+61480018956'
+const template = 'Hi {{firstname}}, This is a test message'
+
+
 exports.main = async (event, callback) => {
 
   const accountSID = process.env.AccountSID
   const authToken = process.env.AuthToken
+  const phoneNumber = twilioPhoneNumber
   const toPhoneNumber = event.inputFields['mobilephone']
   const url = `https://api.twilio.com/2010-04-01/Accounts/${accountSID}/Messages.json`
   
-  // Change this to suit your needs, you can pass a template for text body. 
-  const phoneNumber = '+61480018956'
-  const body = `Hi ${event.inputFields['firstname']}, Test Message`
+  
+  const inputFields = event.inputFields;
+  
+  // replace {{variables}} in the template with the input fields of the same key
+  const body = template.replace(/{{([^}]+)}}/g, (match, key) => { return inputFields[key]; })
   
   // Required Parameters
   const params = new URLSearchParams()
