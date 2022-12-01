@@ -1,0 +1,69 @@
+<html lang="en">
+  <head>
+    <title>URL Shortening and QR Code</title>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.js"></script>
+    <script>
+      async function getShortenUrl() {
+        const username = document.getElementById("username").value;
+        const token = "cbaxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
+        const group_guid = "Bmcxxxxxxxx";
+        const baseUrl = "https://api-ssl.bitly.com/v4/shorten";
+        const longUrl =
+          "https://twilio-stack-server-5417-dev.twil.io/index.html?twilion=" +
+          username;
+
+        console.log(`generating short url for ${username}`);
+        const payload = await fetch(baseUrl, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+          body: JSON.stringify({
+            group_guid,
+            long_url: longUrl,
+          }),
+        });
+
+        // Print Shorten URL
+        const data = await payload.json();
+        const elem = document.getElementById("shortenURL");
+        elem.innerHTML = data.link;
+
+        // Generate QR Code
+        QRCode.toCanvas(
+          document.getElementById("qrcode-canvas"),
+          data.link,
+          function (error) {
+            if (error) console.error(error);
+            console.log("success!");
+          }
+        );
+      }
+
+      function copyImg() {
+        const canvas = document.getElementById("qrcode-canvas");
+        canvas.toBlob(async function (blob) {
+          // Copy Image to Clipboard
+          await navigator.clipboard.write([
+            new ClipboardItem({
+              [blob.type]: blob,
+            }),
+          ]);
+          console.log("Image copied.");
+        });
+      }
+    </script>
+  </head>
+  <body>
+    <p>
+      <input type="text" id="username" placeholder="Enter your username" />
+      <button id="shorten-button" onclick="getShortenUrl()">
+        Generate Shorten URL
+      </button>
+      <span id="shortenURL"></span>
+      <canvas id="qrcode-canvas" onclick="copyImg()"></canvas>
+      <img id="qrcode-img" />
+    </p>
+  </body>
+</html>
